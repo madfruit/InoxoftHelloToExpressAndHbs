@@ -20,14 +20,14 @@ app.set('view engine', '.hbs');
 app.engine('.hbs', expressHbs({ defaultLayout: false }));
 app.set('views', staticPath);
 
-
 app.get('/', (req, res) => {
     res.redirect('/auth');
 });
 
-app.get('/auth', (req, res) =>{
+app.get('/auth', (req, res) => {
     res.render('login');
 });
+
 app.post('/auth', (req, res) => {
     const { email, password } = req.body;
 
@@ -37,7 +37,7 @@ app.post('/auth', (req, res) => {
         res.redirect('/register');
         return;
     }
-    if(password !== user.password){
+    if (password !== user.password) {
         res.status(403).end('Access denied, wrong password');
     }
     res.redirect(`users/${user.email}`);
@@ -46,13 +46,12 @@ app.post('/auth', (req, res) => {
 app.get('/users/:user_email', (req, res) => {
     const { user_email } = req.params;
     const user = users.find(user => user.email == user_email);
-    res.render('user', {user});
+    res.render('user', { user });
 });
 
-app.get('/users', (req, res) =>{
-    res.render('users', {users});
+app.get('/users', (req, res) => {
+    res.render('users', { users });
 });
-
 
 app.get('/register', (req, res) => {
     res.render('register')
@@ -61,12 +60,12 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
     const user = req.body;
     const userByEmail = users.find(u => u.email == user.email);
-    if(userByEmail){
+    if (userByEmail) {
         res.end('Email is already in use');
         return;
     }
     users.push(user);
-    writeFilePromisified(databasePath, JSON.stringify(users)).then(() =>{
+    writeFilePromisified(databasePath, JSON.stringify(users)).then(() => {
         res.redirect('/auth');
     });
 });
@@ -74,4 +73,3 @@ app.post('/register', (req, res) => {
 app.listen(PORT, () => {
     console.log("listening on port", PORT);
 });
-
