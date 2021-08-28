@@ -1,29 +1,52 @@
 const userService = require('../services/user.service');
 
 module.exports = {
-    getUserByEmail: (req, res) => {
-        const { user_email } = req.params;
-        const user = userService.getUserByEmail(user_email);
-        if (!user) {
-            res.send('User not found');
-            return;
+    createUser: async (req, res, next) => {
+        try {
+            const userToAdd = req.body;
+            const user = await userService.createUser(userToAdd);
+            res.status(201).json(user);
+        } catch (e) {
+            next(e);
         }
-        res.json(user);
     },
 
-    getAllUsers: (req, res) => {
-        const users = userService.getUsers();
-        res.json(users);
+    getUserByEmail: async (req, res, next) => {
+        try {
+            const { user_email } = req.params;
+            const user = await userService.getUserByEmail(user_email);
+            res.json(user);
+        } catch (e) {
+            next(e);
+        }
     },
 
-    createUser: async (req, res) => {
-        const user = req.body;
-        const userByEmail = userService.getUserByEmail(user.email);
-        if (userByEmail) {
-            res.end('Email is already in use');
-            return;
+    getAllUsers: async (req, res, next) => {
+        try {
+            const users = await userService.getAllUsers();
+            res.json(users);
+        } catch (e) {
+            next(e);
         }
-        await userService.addUser(user);
-        res.redirect('/auth');
+    },
+
+    updateUser: async (req, res, next) => {
+        try {
+            const userToUpdate = req.body;
+            const user = await userService.updateUser(userToUpdate);
+            res.json(user);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    deleteUserByEmail: async (req, res, next) => {
+        try {
+            const { user_email } = req.params;
+            await userService.deleteUser(user_email);
+            res.json(user_email);
+        } catch (e) {
+            next(e);
+        }
     }
 };

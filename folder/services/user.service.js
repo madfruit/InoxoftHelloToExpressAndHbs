@@ -1,24 +1,28 @@
-const fs = require('fs');
-const util = require('util');
-const path = require('path');
-const users = require('../database/users.json');
-
-const dbPath = path.join(__dirname, '../database/users.json');
-
-const writeFilePromisified = util.promisify(fs.writeFile);
-
-function getUsers() {
-    return users;
-}
+const { User } = require('../database');
 
 module.exports = {
-    addUser: async (user) => {
-        users.push(user);
-        await writeFilePromisified(dbPath, JSON.stringify(users));
-    },
-    getUserByEmail: (email) => {
-        const user = users.find((u) => u.email === email);
+
+    createUser: async (userObject) => {
+        const user = await User.create(userObject);
         return user;
     },
-    getUsers
+
+    getUserByEmail: async (userEmail) => {
+        const user = await User.findOne({ email: userEmail });
+        return user;
+    },
+
+    getAllUsers: async () => {
+        const users = await User.find({});
+        return users;
+    },
+
+    updateUser: async (user) => {
+        const updatedUser = await User.findOneAndUpdate({ email: user.email }, user);
+        return updatedUser;
+    },
+
+    deleteUser: async (user) => {
+        await User.findOneAndDelete({ email: user.email });
+    }
 };
