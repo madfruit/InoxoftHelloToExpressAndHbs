@@ -1,5 +1,5 @@
 module.exports = {
     PETROL: 'petrol',
-    DIESEL: 'DIESEL',
-    ELECTRICITY: 'ELECTRICITY'
+    DIESEL: 'diesel',
+    ELECTRICITY: 'electricity'
 };

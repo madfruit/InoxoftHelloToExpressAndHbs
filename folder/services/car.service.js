@@ -16,6 +16,11 @@ module.exports = {
         return car;
     },
 
+    findCar: async (car_producer, car_model, car_fuel) => {
+        const carInDB = await Car.findOne({ producer: car_producer, model: car_model, fuel: car_fuel });
+        return carInDB;
+    },
+
     updateCar: async (car, carId) => {
         const updatedCar = await Car.findByIdAndUpdate(carId, car);
         return updatedCar;

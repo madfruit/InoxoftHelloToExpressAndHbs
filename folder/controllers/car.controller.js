@@ -25,7 +25,7 @@ module.exports = {
     getAllCars: async (req, res, next) => {
         try {
             const cars = await carService.getAllCars();
-            return cars;
+            res.json(cars);
         } catch (e) {
             next(e);
         }

@@ -1,17 +1,12 @@
-const { Car } = require('../database');
 const ErrorHandler = require('../errors/ErrorHandler');
-
-async function _findCar(car) {
-    const carInDB = await Car.find({ producer: car.producer, model: car.model, fuel: car.fuel });
-    return carInDB;
-}
+const carService = require('../services/car.service');
 
 module.exports = {
     checkCarAlreadyExists: async (req, res, next) => {
         try {
-            const { car } = req.body;
+            const { producer, model, fuel } = req.body;
 
-            const carInDB = await _findCar(car);
+            const carInDB = await carService.findCar(producer, model, fuel);
 
             if (carInDB) {
                 throw new ErrorHandler(409, 'This car already exists in database');
@@ -25,14 +20,27 @@ module.exports = {
 
     checkCarExists: async (req, res, next) => {
         try {
-            const { car } = req.body;
+            const { producer, model, fuel } = req.body;
 
-            const carInDB = await _findCar(car);
+            const carInDB = await carService.findCar(producer, model, fuel);
 
             if (!carInDB) {
                 throw new ErrorHandler(404, 'Car not found');
             }
 
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkCarById: async (req, res, next) => {
+        try {
+            const { car_id } = req.params;
+            const carInDB = await carService.getCarById(car_id);
+            if (!carInDB) {
+                throw new ErrorHandler(404, 'Car not found');
+            }
             next();
         } catch (e) {
             next(e);

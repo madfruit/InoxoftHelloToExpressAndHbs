@@ -22,7 +22,7 @@ module.exports = {
         return updatedUser;
     },
 
-    deleteUser: async (user) => {
-        await User.findOneAndDelete({ email: user.email });
+    deleteUser: async (userEmail) => {
+        await User.findOneAndDelete({ email: userEmail });
     }
 };
