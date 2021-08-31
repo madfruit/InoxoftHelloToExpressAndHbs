@@ -1,11 +1,15 @@
-const userService = require('../services/user.service');
+const { userService, passwordService } = require('../services');
+const userNormalizer = require('../utils/user.util');
 
 module.exports = {
     createUser: async (req, res, next) => {
         try {
+            const { password } = req.body;
             const userToAdd = req.body;
+            userToAdd.password = await passwordService.hash(password);
             const user = await userService.createUser(userToAdd);
-            res.status(201).json(user);
+            const normalizedUser = userNormalizer(user);
+            res.status(201).json(normalizedUser);
         } catch (e) {
             next(e);
         }
@@ -15,7 +19,8 @@ module.exports = {
         try {
             const { user_email } = req.params;
             const user = await userService.getUserByEmail(user_email);
-            res.json(user);
+            const normalizedUser = userNormalizer(user);
+            res.json(normalizedUser);
         } catch (e) {
             next(e);
         }
@@ -24,7 +29,11 @@ module.exports = {
     getAllUsers: async (req, res, next) => {
         try {
             const users = await userService.getAllUsers();
-            res.json(users);
+            const normalizedUsers = [];
+            users.forEach((user) => {
+                normalizedUsers.push(userNormalizer(user));
+            });
+            res.json(normalizedUsers);
         } catch (e) {
             next(e);
         }
