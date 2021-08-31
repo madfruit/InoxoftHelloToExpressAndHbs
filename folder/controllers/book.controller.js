@@ -1,11 +1,13 @@
 const bookService = require('../services/book.service');
 
+const statusCodes = require('../configs/statusCodes.enum');
+
 module.exports = {
     createBook: async (req, res, next) => {
         try {
             const bookToAdd = req.body;
             const book = await bookService.createBook(bookToAdd);
-            res.json(book);
+            res.status(statusCodes.CREATED).json(book);
         } catch (e) {
             next(e);
         }
