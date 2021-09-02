@@ -2,11 +2,12 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
-const { config, statusCodes } = require('./configs');
+require('dotenv').config();
 
-const { PORT } = config;
+const { PORT, DB_CONNECTION_STRING } = process.env;
+const { statusCodes } = require('./configs');
 
-mongoose.connect('mongodb://localhost:27017/inoxoft');
+mongoose.connect(DB_CONNECTION_STRING);
 
 const app = express();
 const staticPath = path.join(__dirname, 'static');

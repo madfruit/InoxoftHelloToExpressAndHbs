@@ -1,6 +1,8 @@
 const { userService, passwordService } = require('../services');
 const userNormalizer = require('../utils/user.util');
 
+const statusCodes = require('../configs/statusCodes.enum');
+
 module.exports = {
     createUser: async (req, res, next) => {
         try {
@@ -9,7 +11,7 @@ module.exports = {
             userToAdd.password = await passwordService.hash(password);
             const user = await userService.createUser(userToAdd);
             const normalizedUser = userNormalizer(user);
-            res.status(201).json(normalizedUser);
+            res.status(statusCodes.CREATED).json(normalizedUser);
         } catch (e) {
             next(e);
         }
@@ -42,7 +44,8 @@ module.exports = {
     updateUser: async (req, res, next) => {
         try {
             const userToUpdate = req.body;
-            const user = await userService.updateUser(userToUpdate);
+            const {user_email} = req.params;
+            const user = await userService.updateUser(userToUpdate, user_email);
             res.json(user);
         } catch (e) {
             next(e);

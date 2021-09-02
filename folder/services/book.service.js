@@ -33,5 +33,12 @@ module.exports = {
 
     deleteBook: async (bookId) => {
         await Book.findByIdAndDelete(bookId);
+    },
+
+    buyBook: async (bookToBuy, bookAmount) => {
+        const book = bookToBuy;
+        book.amount -= bookAmount;
+        await Book.findByIdAndUpdate(bookToBuy._id, bookToBuy);
+        return book;
     }
 };

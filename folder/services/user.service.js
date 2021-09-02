@@ -17,12 +17,17 @@ module.exports = {
         return users;
     },
 
-    updateUser: async (user) => {
-        const updatedUser = await User.findOneAndUpdate({ email: user.email }, user);
+    updateUser: async (user, userEmail) => {
+        const updatedUser = await User.findOneAndUpdate({ email: userEmail }, user);
         return updatedUser;
     },
 
     deleteUser: async (userEmail) => {
         await User.findOneAndDelete({ email: userEmail });
+    },
+
+    getUserByDynamicParam: async (dbField, value) => {
+        const user = await User.findOne({ [dbField]: value });
+        return user;
     }
 };

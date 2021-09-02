@@ -13,10 +13,9 @@ module.exports = {
         }
     },
 
-    getBookById: async (req, res, next) => {
+    getBookById: (req, res, next) => {
         try {
-            const { book_id } = req.params;
-            const book = await bookService.getBookById(book_id);
+            const { book } = req;
             res.json(book);
         } catch (e) {
             next(e);
@@ -52,4 +51,15 @@ module.exports = {
             next(e);
         }
     },
+
+    buyBook: async (req, res, next) => {
+        try {
+            const { amount } = req.body;
+            const { book } = req;
+            await bookService.buyBook(book, amount);
+            res.json(book);
+        } catch (e) {
+            next(e);
+        }
+    }
 };

@@ -1,16 +1,15 @@
 const userService = require('../services/user.service');
 const ErrorHandler = require('../errors/ErrorHandler');
-const userValidators = require('../validators/user.validators');
+const { userValidators, idValidator } = require('../validators');
+const statusCodes = require('../configs/statusCodes.enum');
 
 module.exports = {
-    checkEmailExists: async (req, res, next) => {
+    checkEmailExists: (req, res, next) => {
         try {
-            const { email = '' } = req.body;
+            const { user } = req;
 
-            const userByEmail = await userService.getUserByEmail(email);
-
-            if (userByEmail) {
-                throw new ErrorHandler(409, 'Email already exists in database');
+            if (user) {
+                throw new ErrorHandler(statusCodes.CONFLICT, 'Email already exists in database');
             }
             next();
         } catch (e) {
@@ -18,16 +17,13 @@ module.exports = {
         }
     },
 
-    userExists: async (req, res, next) => {
+    userExists: (req, res, next) => {
         try {
-            const { user_email } = req.params;
-
-            const user = await userService.getUserByEmail(user_email);
+            const { user } = req;
 
             if (!user) {
-                throw new ErrorHandler(404, 'User not found');
+                throw new ErrorHandler(statusCodes.NOT_FOUND, 'User not found');
             }
-
             next();
         } catch (err) {
             next(err);
@@ -39,7 +35,7 @@ module.exports = {
             const { error, value } = userValidators.createUserValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(400, error.details[0].message);
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
             }
 
             req.body = value;
@@ -54,13 +50,56 @@ module.exports = {
             const { error, value } = userValidators.updateUserValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(400, error.details[0].message);
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
             }
 
             req.body = value;
             next();
         } catch (err) {
             next(err);
+        }
+    },
+
+    checkUserRole: (roleArr = []) => (req, res, next) => {
+        try {
+            const { role } = req.user;
+
+            if (!roleArr.length) {
+                return next();
+            }
+
+            if (!roleArr.includes(role)) {
+                throw new ErrorHandler();
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    getUserByDynamicParam: (paramName, searchIn = 'body', dbField = paramName) => async (req, res, next) => {
+        try {
+            const value = req[searchIn][paramName];
+
+            const user = await userService.getUserByDynamicParam(dbField, value);
+
+            req.user = user;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkIdIsValid: (req, res, next) => {
+        try {
+            const { id } = req.params;
+
+            idValidator.validateMongoId(id);
+            next();
+        } catch (e) {
+            next(e);
         }
     }
 };
