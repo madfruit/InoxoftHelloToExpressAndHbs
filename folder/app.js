@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const { PORT, DB_CONNECTION_STRING } = process.env;
+const { PORT, DB_CONNECTION_STRING } = require('./configs/configs');
 const { statusCodes } = require('./configs');
 
 mongoose.connect(DB_CONNECTION_STRING);
@@ -16,10 +16,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(staticPath));
 
-const { booksRouter, userRouter } = require('./routers');
+const { booksRouter, userRouter, authRouter } = require('./routers');
 
 app.use('/users', userRouter);
 app.use('/books', booksRouter);
+app.use('/auth', authRouter);
 app.use(_mainErrorHandler);
 
 // eslint-disable-next-line no-unused-vars

@@ -2,6 +2,7 @@ const userService = require('../services/user.service');
 const ErrorHandler = require('../errors/ErrorHandler');
 const { userValidators, idValidator } = require('../validators');
 const statusCodes = require('../configs/statusCodes.enum');
+const { userRoles } = require('../configs');
 
 module.exports = {
     checkEmailExists: (req, res, next) => {
@@ -62,7 +63,7 @@ module.exports = {
 
     checkUserRole: (roleArr = []) => (req, res, next) => {
         try {
-            const { role } = req.user;
+            const { role } = req.currentUser;
 
             if (!roleArr.length) {
                 return next();
@@ -97,6 +98,42 @@ module.exports = {
             const { id } = req.params;
 
             idValidator.validateMongoId(id);
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    canDeleteUser: (req, res, next) => {
+        try {
+            const { currentUser } = req;
+            const { user_email } = req.params;
+
+            if (!currentUser) {
+                throw new ErrorHandler(statusCodes.UNAUTHORIZED, 'Log in to perform this action');
+            }
+
+            if (currentUser.role !== userRoles.ADMIN && currentUser.email !== user_email) {
+                throw new ErrorHandler(statusCodes.FORBIDDEN, 'You are not admin');
+            }
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    canUpdateUser: (req, res, next) => {
+        try {
+            const { currentUser } = req;
+            const { user_email } = req.params;
+
+            if (!currentUser) {
+                throw new ErrorHandler(statusCodes.UNAUTHORIZED, 'Log in to perform this action');
+            }
+
+            if (currentUser.email !== user_email) {
+                throw new ErrorHandler(statusCodes.FORBIDDEN, 'You can only edit your profile');
+            }
             next();
         } catch (e) {
             next(e);

@@ -1,5 +1,7 @@
 module.exports = {
     bookService: require('./book.service'),
+    passwordService: require('./password.service'),
     userService: require('./user.service'),
-    passwordService: require('./password.service')
+    jwtService: require('./jwt.service'),
+    oauthService: require('./oauth.service')
 };

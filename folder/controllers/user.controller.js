@@ -1,5 +1,5 @@
 const { userService, passwordService } = require('../services');
-const userNormalizer = require('../utils/user.util');
+const { userNormalizer } = require('../utils/user.util');
 
 const statusCodes = require('../configs/statusCodes.enum');
 
@@ -44,7 +44,7 @@ module.exports = {
     updateUser: async (req, res, next) => {
         try {
             const userToUpdate = req.body;
-            const {user_email} = req.params;
+            const { user_email } = req.params;
             const user = await userService.updateUser(userToUpdate, user_email);
             res.json(user);
         } catch (e) {
