@@ -16,11 +16,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(staticPath));
 
-const { booksRouter, userRouter, authRouter } = require('./routers');
+const {
+    booksRouter,
+    userRouter,
+    authRouter,
+    adminRouter
+} = require('./routers');
 
 app.use('/users', userRouter);
 app.use('/books', booksRouter);
 app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
 app.use(_mainErrorHandler);
 
 // eslint-disable-next-line no-unused-vars

@@ -1,4 +1,4 @@
-const { WELCOME, PASSWORD_RESET } = require('../configs/emailActions.enum');
+const { WELCOME, PASSWORD_RESET, GRANT_ADMIN } = require('../configs/emailActions.enum');
 
 module.exports = {
     [WELCOME]: {
@@ -8,5 +8,9 @@ module.exports = {
     [PASSWORD_RESET]: {
         templateName: 'password_reset',
         subject: 'Reset your password',
+    },
+    [GRANT_ADMIN]: {
+        templateName: 'grant_admin',
+        subject: 'You are now admin'
     }
 };

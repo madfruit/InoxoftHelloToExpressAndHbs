@@ -5,6 +5,7 @@ module.exports = {
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || 'some_secret_word',
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || 'another_secret_word',
     RESET_TOKEN_SECRET: process.env.RESET_TOKEN_SECRET || 'reset_secret_word',
+    ADMIN_TOKEN_SECRET: process.env.ADMIN_TOKEN_SECRET || 'admin_secret_word',
 
     EMAIL_BROADCAST: process.env.EMAIL_BROADCAST || 'test@gmail.com',
     EMAIL_BROADCAST_PASS: process.env.EMAIL_BROADCAST_PASS || '12345',

@@ -1,10 +1,6 @@
-const { ResetPassword } = require('../database');
-const {
-    constants,
-    statusCodes,
-} = require('../configs');
+const { constants, statusCodes, actionTokens } = require('../configs');
 const ErrorHandler = require('../errors/ErrorHandler');
-const { jwtService, oauthService, passwordResetService } = require('../services');
+const { jwtService, oauthService, actionTokenService } = require('../services');
 
 module.exports = {
     checkToken: (tokenType = 'access') => async (req, res, next) => {
@@ -31,15 +27,20 @@ module.exports = {
         }
     },
 
-    checkResetToken: async (req, res, next) => {
+    checkActionToken: (tokenType) => async (req, res, next) => {
         try {
             const { token } = req.query;
             if (!token) {
                 throw new ErrorHandler(statusCodes.BAD_REQUEST, 'No token');
             }
 
-            await jwtService.verifyResetToken(token);
-            const user = await passwordResetService.getUserByToken(token);
+            if (tokenType === actionTokens.RESET_PASSWORD) {
+                await jwtService.verifyResetToken(token);
+            } else {
+                await jwtService.verifyAdminToken(token);
+            }
+
+            const user = await actionTokenService.getUserByToken(token, tokenType);
             if (!user) {
                 throw new ErrorHandler(statusCodes.BAD_REQUEST, 'Invalid token');
             }

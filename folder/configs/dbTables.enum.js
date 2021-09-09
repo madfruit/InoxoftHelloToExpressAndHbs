@@ -3,5 +3,5 @@ module.exports = {
     BOOK: 'book',
     OAUTH: 'oauth',
     USER: 'user',
-    RESET_PASSWORD: 'resetPassword'
+    ACTION_TOKENS: 'actionTokens'
 };

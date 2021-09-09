@@ -24,13 +24,26 @@ module.exports = {
     },
 
     generateResetToken: () => {
-        const token = jwt.sign({}, configs.RESET_TOKEN_SECRET, { expiresIn: '30m' });
+        const token = jwt.sign({}, configs.RESET_TOKEN_SECRET, { expiresIn: '3d' });
         return token;
     },
 
     verifyResetToken: (token) => {
         try {
             jwt.verify(token, configs.RESET_TOKEN_SECRET);
+        } catch (e) {
+            throw new ErrorHandler(statusCodes.BAD_REQUEST, 'Invalid token');
+        }
+    },
+
+    generateAdminToken: () => {
+        const token = jwt.sign({}, configs.ADMIN_TOKEN_SECRET, { expiresIn: '7d' });
+        return token;
+    },
+
+    verifyAdminToken: (token) => {
+        try {
+            jwt.verify(token, configs.ADMIN_TOKEN_SECRET);
         } catch (e) {
             throw new ErrorHandler(statusCodes.BAD_REQUEST, 'Invalid token');
         }

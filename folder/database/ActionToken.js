@@ -1,8 +1,8 @@
-const { dbTables } = require('../configs');
 const { Schema, model } = require('mongoose');
+const { dbTables, actionTokens } = require('../configs');
 
-const ResetPasswordSchema = new Schema({
-    reset_token: {
+const ActionTokenSchema = new Schema({
+    token: {
         type: String,
         required: true
     },
@@ -11,11 +11,17 @@ const ResetPasswordSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: dbTables.USER
+    },
+
+    type: {
+        type: String,
+        required: true,
+        enum: Object.values(actionTokens)
     }
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
-ResetPasswordSchema.pre('findOne', function() {
+ActionTokenSchema.pre('findOne', function() {
     this.populate(dbTables.USER);
 });
 
-module.exports = model(dbTables.RESET_PASSWORD, ResetPasswordSchema);
+module.exports = model(dbTables.ACTION_TOKENS, ActionTokenSchema);

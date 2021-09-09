@@ -1,10 +1,15 @@
-const { constants, statusCodes, emailActions } = require('../configs');
+const {
+    constants,
+    statusCodes,
+    emailActions,
+    actionTokens
+} = require('../configs');
 const { OAuth } = require('../database');
 const {
     passwordService,
     jwtService,
     emailService,
-    passwordResetService,
+    actionTokenService,
     userService,
     oauthService
 } = require('../services');
@@ -78,7 +83,7 @@ module.exports = {
                     resetUrl: url
                 }
             );
-            await passwordResetService.createToken(user._id, token);
+            await actionTokenService.createToken(user._id, token, actionTokens.RESET_PASSWORD);
             res.json('ok');
         } catch (e) {
             next(e);
@@ -90,7 +95,7 @@ module.exports = {
             const { reset_token } = req.query;
 
             jwtService.verifyResetToken(reset_token);
-            const user = await passwordResetService.getUserByToken(reset_token);
+            const user = await actionTokenService.getUserByToken(reset_token, actionTokens.RESET_PASSWORD);
 
             res.json(user);
         } catch (e) {
@@ -105,7 +110,7 @@ module.exports = {
             currentUser.password = await passwordService.hash(password);
             await userService.updateUser(currentUser, currentUser.email);
             await oauthService.deleteAllTokenPairsByUserId(currentUser._id);
-            await passwordResetService.deleteTokenByUserId(currentUser._id);
+            await actionTokenService.deleteTokenByUserId(currentUser._id, actionTokens.RESET_PASSWORD);
             res.json('ok');
         } catch (e) {
             next(e);
