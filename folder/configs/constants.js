@@ -4,5 +4,6 @@ module.exports = {
     MAX_DATE: new Date(new Date().getFullYear() - 6, 1, 1),
     PASSWORD_REGEXP: new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,128})/),
     EMAIL_REGEXP: new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'),
-    AUTHORIZATION: 'Authorization'
+    AUTHORIZATION: 'Authorization',
+    API_URL: 'http://localhost:5000'
 };

@@ -22,7 +22,12 @@ const updateUserValidator = Joi.object({
     email: Joi.string().regex(constants.EMAIL_REGEXP).trim(),
 });
 
+const passwordUserValidator = Joi.object({
+    password: Joi.string().regex(constants.PASSWORD_REGEXP).trim().required()
+});
+
 module.exports = {
     createUserValidator,
-    updateUserValidator
+    updateUserValidator,
+    passwordUserValidator
 };

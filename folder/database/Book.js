@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { dbTables } = require('../configs');
 
 const bookSchema = new Schema({
     name: {
@@ -8,9 +9,9 @@ const bookSchema = new Schema({
     },
 
     author: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
-        trim: true
+        ref: dbTables.AUTHOR
     },
 
     publisher: {
@@ -40,6 +41,6 @@ const bookSchema = new Schema({
         type: Number,
         required: true
     }
-});
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 module.exports = model('book', bookSchema);

@@ -26,8 +26,8 @@ module.exports = {
                 throw new ErrorHandler(statusCodes.NOT_FOUND, 'User not found');
             }
             next();
-        } catch (err) {
-            next(err);
+        } catch (e) {
+            next(e);
         }
     },
 
@@ -41,8 +41,8 @@ module.exports = {
 
             req.body = value;
             next();
-        } catch (err) {
-            next(err);
+        } catch (e) {
+            next(e);
         }
     },
 
@@ -56,8 +56,22 @@ module.exports = {
 
             req.body = value;
             next();
-        } catch (err) {
-            next(err);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUserPassword: (req, res, next) => {
+        try {
+            const { error, value } = userValidators.passwordUserValidator.validate(req.body);
+            if (error) {
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
+            }
+
+            req.body = value;
+            next();
+        } catch (e) {
+            next(e);
         }
     },
 

@@ -1,4 +1,4 @@
-const { userService, passwordService } = require('../services');
+const { userService, passwordService, emailService } = require('../services');
 const { userNormalizer } = require('../utils/user.util');
 
 const statusCodes = require('../configs/statusCodes.enum');
@@ -11,6 +11,7 @@ module.exports = {
             userToAdd.password = await passwordService.hash(password);
             const user = await userService.createUser(userToAdd);
             const normalizedUser = userNormalizer(user);
+            await emailService.sendMail(normalizedUser.email);
             res.status(statusCodes.CREATED).json(normalizedUser);
         } catch (e) {
             next(e);

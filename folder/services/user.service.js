@@ -29,5 +29,10 @@ module.exports = {
     getUserByDynamicParam: async (dbField, value) => {
         const user = await User.findOne({ [dbField]: value });
         return user;
+    },
+
+    resetPassword: async (user, password) => {
+        const updatedUser = { ...user, password };
+        await User.findOneAndUpdate({ email: user.email }, updatedUser);
     }
 };
