@@ -34,5 +34,10 @@ module.exports = {
     resetPassword: async (user, password) => {
         const updatedUser = { ...user, password };
         await User.findOneAndUpdate({ email: user.email }, updatedUser);
+    },
+
+    setAvatar: async (user_id, location) => {
+        const updatedUser = await User.findByIdAndUpdate(user_id.toString(), { avatar: location }, { new: true })
+        return updatedUser;
     }
 };

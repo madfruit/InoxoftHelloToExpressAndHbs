@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const expressFileUpload = require('express-fileupload');
 
 require('dotenv').config();
 
@@ -15,6 +16,7 @@ const staticPath = path.join(__dirname, 'static');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(staticPath));
+app.use(expressFileUpload());
 
 const {
     booksRouter,

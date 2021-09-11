@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const userController = require('../controllers/user.controller');
 
-const { authMiddleware, userMiddleware } = require('../middlewares');
+const { authMiddleware, userMiddleware, fileMiddleware } = require('../middlewares');
 
 router.use('/:user_email', userMiddleware.getUserByDynamicParam('user_email', 'params', 'email'), userMiddleware.userExists);
 
@@ -17,6 +17,7 @@ router.put('/:user_email', authMiddleware.checkToken('access'), userMiddleware.c
 router.post(
     '/',
     userMiddleware.checkNewUserData,
+    fileMiddleware.checkUserAvatar,
     userMiddleware.getUserByDynamicParam('email'),
     userMiddleware.checkEmailExists,
     userController.createUser

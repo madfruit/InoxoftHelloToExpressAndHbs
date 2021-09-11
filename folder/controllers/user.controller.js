@@ -1,17 +1,25 @@
-const { userService, passwordService, emailService } = require('../services');
+const { userService, passwordService, emailService, s3Service } = require('../services');
 const { userNormalizer } = require('../utils/user.util');
 
-const statusCodes = require('../configs/statusCodes.enum');
+const { statusCodes, emailActions } = require('../configs');
 
 module.exports = {
     createUser: async (req, res, next) => {
         try {
             const { password } = req.body;
             const userToAdd = req.body;
+            const { avatar } = req.files;
             userToAdd.password = await passwordService.hash(password);
-            const user = await userService.createUser(userToAdd);
+            let user = await userService.createUser(userToAdd);
             const normalizedUser = userNormalizer(user);
-            await emailService.sendMail(normalizedUser.email);
+
+            if (avatar) {
+                const uploadFile = await s3Service.upload(avatar, 'user', '123');
+
+                user = userService.setAvatar(user._id, uploadFile.Location);
+            }
+
+            await emailService.sendMail(normalizedUser.email, emailActions.WELCOME,{ userName: user.name });
             res.status(statusCodes.CREATED).json(normalizedUser);
         } catch (e) {
             next(e);

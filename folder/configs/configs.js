@@ -10,5 +10,10 @@ module.exports = {
     EMAIL_BROADCAST: process.env.EMAIL_BROADCAST || 'test@gmail.com',
     EMAIL_BROADCAST_PASS: process.env.EMAIL_BROADCAST_PASS || '12345',
 
-    FRONTEND_URL: process.env.FRONTEND_URL || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    FRONTEND_URL: process.env.FRONTEND_URL || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+
+    AWS_S3_REGION: process.env.AWS_S3_REGION || 'us-east-2',
+    AWS_S3_NAME: process.env.AWS_S3_NAME || 'inoxoft-madfruit-bucket',
+    AWS_S3_ACCESS_KEY: process.env.AWS_S3_ACCESS_KEY || '123123123123',
+    AWS_S3_SECRET_KEY: process.env.AWS_S3_SECRET_KEY || '123123123'
 };
