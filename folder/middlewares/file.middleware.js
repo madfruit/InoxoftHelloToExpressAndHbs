@@ -4,11 +4,12 @@ const { constants, statusCodes } = require('../configs');
 module.exports = {
     checkUserAvatar: (req, res, next) => {
         try {
-            const { avatar } = req.files;
-            if (!avatar) {
+            if (!req.files && !req.files.avatar) {
                 next();
             }
+            const { avatar } = req.files;
             const { name, size, mimetype } = avatar;
+
             if (size > constants.MAX_IMAGE_SIZE) {
                 throw new ErrorHandler(statusCodes.BAD_REQUEST, `File ${name} is too big`);
             }

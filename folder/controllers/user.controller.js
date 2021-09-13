@@ -8,13 +8,12 @@ module.exports = {
         try {
             const { password } = req.body;
             const userToAdd = req.body;
-            const { avatar } = req.files;
             userToAdd.password = await passwordService.hash(password);
             let user = await userService.createUser(userToAdd);
             const normalizedUser = userNormalizer(user);
 
-            if (avatar) {
-                const uploadFile = await s3Service.upload(avatar, 'user', '123');
+            if (req.files && req.files.avatar) {
+                const uploadFile = await s3Service.upload(req.files.avatar, 'user', '123');
 
                 user = userService.setAvatar(user._id, uploadFile.Location);
             }

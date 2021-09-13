@@ -15,5 +15,8 @@ module.exports = {
     AWS_S3_REGION: process.env.AWS_S3_REGION || 'us-east-2',
     AWS_S3_NAME: process.env.AWS_S3_NAME || 'inoxoft-madfruit-bucket',
     AWS_S3_ACCESS_KEY: process.env.AWS_S3_ACCESS_KEY || '123123123123',
-    AWS_S3_SECRET_KEY: process.env.AWS_S3_SECRET_KEY || '123123123'
+    AWS_S3_SECRET_KEY: process.env.AWS_S3_SECRET_KEY || '123123123',
+    ENV: process.env.ENV || 'dev',
+
+    ALLOWED_ORIGIN: process.env.ALLOWED_ORIGIN || 'http://localhost:3000'
 };
