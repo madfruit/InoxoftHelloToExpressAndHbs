@@ -105,8 +105,7 @@ module.exports = {
 
     updatePassword: async (req, res, next) => {
         try {
-            const { currentUser } = req;
-            const { password } = req.body;
+            const { currentUser, body: { password } } = req;
             currentUser.password = await passwordService.hash(password);
             await userService.updateUser(currentUser, currentUser.email);
             await oauthService.deleteAllTokenPairsByUserId(currentUser._id);

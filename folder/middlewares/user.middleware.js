@@ -98,7 +98,9 @@ module.exports = {
             const value = req[searchIn][paramName];
 
             const user = await userService.getUserByDynamicParam(dbField, value);
-
+            if (!user) {
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, 'Invalid email');
+            }
             req.user = user;
 
             next();
