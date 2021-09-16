@@ -11,5 +11,18 @@ module.exports = {
     PHOTO_MIMETYPES: [
         'image/gif',
         'image/jpeg'
+    ],
+
+    ALLOWED_USER_FILTERS: [
+        'role',
+        'email',
+        'name'
+    ],
+
+    ALLOWED_BOOK_FILTERS: [
+        'name',
+        'author',
+        'price',
+        'amount'
     ]
 };

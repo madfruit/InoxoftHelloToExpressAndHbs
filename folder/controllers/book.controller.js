@@ -24,7 +24,7 @@ module.exports = {
 
     getAllBooks: async (req, res, next) => {
         try {
-            const books = await bookService.getAllBooks();
+            const books = await bookService.findBooks(req.query);
             res.json(books);
         } catch (e) {
             next(e);

@@ -9,9 +9,9 @@ const bookSchema = new Schema({
     },
 
     author: {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: true,
-        ref: dbTables.AUTHOR
+        trim: true
     },
 
     publisher: {

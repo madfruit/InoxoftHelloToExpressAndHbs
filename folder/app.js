@@ -5,9 +5,13 @@ const expressFileUpload = require('express-fileupload');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+
 require('dotenv').config();
+
 const cronJobs = require('./cron');
 const { statusCodes, configs } = require('./configs');
+const docs = require('./docs/swagger.json');
 
 mongoose.connect(configs.DB_CONNECTION_STRING);
 
@@ -42,6 +46,7 @@ const {
     adminRouter
 } = require('./routers');
 
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/users', userRouter);
 app.use('/books', booksRouter);
 app.use('/auth', authRouter);

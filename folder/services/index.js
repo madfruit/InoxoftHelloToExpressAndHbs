@@ -6,5 +6,6 @@ module.exports = {
     s3Service: require('./s3.service'),
     userService: require('./user.service'),
     jwtService: require('./jwt.service'),
-    oauthService: require('./oauth.service')
+    oauthService: require('./oauth.service'),
+    queryService: require('./query.service')
 };

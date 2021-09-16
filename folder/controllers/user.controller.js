@@ -18,7 +18,7 @@ module.exports = {
                 user = userService.setAvatar(user._id, uploadFile.Location);
             }
 
-            await emailService.sendMail(normalizedUser.email, emailActions.WELCOME,{ userName: user.name });
+            await emailService.sendMail(normalizedUser.email, emailActions.WELCOME, { userName: user.name });
             res.status(statusCodes.CREATED).json(normalizedUser);
         } catch (e) {
             next(e);
@@ -38,12 +38,13 @@ module.exports = {
 
     getAllUsers: async (req, res, next) => {
         try {
-            const users = await userService.getAllUsers();
+            const users = await userService.findUsers(req.query);
             const normalizedUsers = [];
-            users.forEach((user) => {
+            users.data.forEach((user) => {
                 normalizedUsers.push(userNormalizer(user));
             });
-            res.json(normalizedUsers);
+            users.data = normalizedUsers;
+            res.json(users);
         } catch (e) {
             next(e);
         }

@@ -1,0 +1,312 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Inoxoft documantation",
+    "version": "1.0",
+    "description": "Hello world"
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "description": "Gets all users",
+        "operationId": "getAllUsers",
+        "parameters": [
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "Amount of showed items",
+            "required": false,
+            "default": 20,
+            "example": 10,
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page",
+            "required": false,
+            "default": 1,
+            "example": 3,
+            "type": "number"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Property to sort by",
+            "required": false,
+            "default": "createdAt",
+            "example": "createdAt",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "type": "string",
+            "description": "Order of sorting",
+            "required": false,
+            "default": "asc",
+            "example": "desc"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "type": "string",
+            "description": "User name",
+            "required": false,
+            "example": "ivan"
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "type": "string",
+            "description": "User role",
+            "required": false,
+            "example": "user"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string",
+            "description": "User email",
+            "required": false,
+            "example": "ivan@ivan.ivan"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "description": "Create new user",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "body",
+            "description": "User's id",
+            "type": "string",
+            "required": true,
+            "example": "some mongo id here..."
+
+          },
+          {
+            "name": "name",
+            "in": "body",
+            "description": "User's name",
+            "required": true,
+            "default": "Ivan",
+            "example": "Ivan",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "User's email",
+            "required": true,
+            "default": "ivan@ivan.ivan",
+            "example": "ivan@ivan.ivan",
+            "type": "string"
+          },
+          {
+            "name": "role",
+            "description": "User's role",
+            "in": "body",
+            "type": "string",
+            "default": "user",
+            "example": "user",
+            "required": true
+          },
+          {
+            "name": "password",
+            "description": "User's password",
+            "in": "body",
+            "type": "string",
+            "default": "123#password123",
+            "example": "123#password123",
+            "required": true
+          },
+          {
+            "name": "avatar",
+            "description": "User's avatar",
+            "in": "body",
+            "type": "file",
+            "required": false
+          },
+          {
+            "name": "birthDate",
+            "description": "User's birthdate",
+            "in": "body",
+            "type": "string",
+            "example": "1.1.2000",
+            "default": "1.1.2000",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "schema": {
+              "$ref": "#/definitions/ErrorSchema"
+            }
+          },
+          "409": {
+            "description": "CONFLICT",
+            "schema": {
+              "$ref": "#/definitions/ErrorSchema"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "description": "Update user",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "body",
+            "description": "User's id",
+            "type": "string",
+            "required": true,
+            "example": "some mongo id here..."
+          },
+          {
+            "name": "name",
+            "in": "body",
+            "description": "User's name",
+            "required": true,
+            "default": "Ivan",
+            "example": "Ivan",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "User's email",
+            "required": true,
+            "default": "ivan@ivan.ivan",
+            "example": "ivan@ivan.ivan",
+            "type": "string"
+          },
+          {
+            "name": "role",
+            "description": "User's role",
+            "in": "body",
+            "type": "string",
+            "default": "user",
+            "example": "user",
+            "required": true
+          },
+          {
+            "name": "password",
+            "description": "User's password",
+            "in": "body",
+            "type": "string",
+            "default": "123#password123",
+            "example": "123#password123",
+            "required": true
+          },
+          {
+            "name": "avatar",
+            "description": "User's avatar",
+            "in": "body",
+            "type": "file",
+            "required": false
+          },
+          {
+            "name": "birthDate",
+            "description": "User's birthdate",
+            "in": "body",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/ErrorSchema"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/ErrorSchema"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Customer name",
+            "type": "string",
+            "example": "Igor"
+          },
+          "email": {
+            "description": "User's email",
+            "default": "ivan@ivan.ivan",
+            "type": "string",
+            "example": "igor@igor.igor"
+          },
+          "role": {
+            "description": "User's role",
+            "type": "string",
+            "example": "user"
+          },
+          "password": {
+            "description": "User's password",
+            "type": "string",
+            "example": "123#password123"
+          },
+          "avatar": {
+            "type": "file",
+            "description": "User's avatar"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "User's birth date",
+            "example": "1.1.2001"
+          }
+        }
+      },
+    "ErrorSchema": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Email is not valid"
+        }
+      }
+    }
+  }
+}

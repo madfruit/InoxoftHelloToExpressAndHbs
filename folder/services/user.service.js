@@ -1,5 +1,7 @@
 const { User } = require('../database');
 
+const queryService = require('./query.service');
+
 module.exports = {
 
     createUser: async (userObject) => {
@@ -37,7 +39,34 @@ module.exports = {
     },
 
     setAvatar: async (user_id, location) => {
-        const updatedUser = await User.findByIdAndUpdate(user_id.toString(), { avatar: location }, { new: true })
+        const updatedUser = await User.findByIdAndUpdate(user_id.toString(), { avatar: location }, { new: true });
         return updatedUser;
+    },
+
+    findUsers: async (query = {}) => {
+        const {
+            perPage = 20,
+            page = 1,
+            sortBy = 'createdAt',
+            order = 'asc',
+            ...filters
+        } = query;
+        const skip = (page - 1) * perPage;
+        const orderBy = order === 'asc' ? -1 : 1;
+        const sort = { [sortBy]: orderBy };
+        const filterObject = queryService.getFilterObject(filters);
+
+        const users = await User
+            .find(filterObject)
+            .limit(+perPage)
+            .skip(skip)
+            .sort(sort);
+        const count = await User.countDocuments(filterObject);
+        return {
+            data: users,
+            page,
+            limit: +perPage,
+            pageCount: Math.ceil(count / perPage)
+        };
     }
 };
