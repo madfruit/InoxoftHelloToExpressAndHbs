@@ -4,7 +4,10 @@ module.exports = {
             'password',
             '__v'
         ];
-        user = user.toObject();
+        try {
+            user = user.toObject();
+        } catch (e) {
+        }
 
         fieldsToRemove.forEach((field) => {
             delete user[field];

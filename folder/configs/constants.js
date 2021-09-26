@@ -7,6 +7,7 @@ module.exports = {
     AUTHORIZATION: 'Authorization',
     API_URL: 'http://localhost:5000',
     MAX_IMAGE_SIZE: 5 * 1024 * 1024,
+    REDIS_DEFAULT_TTL: 3600,
 
     PHOTO_MIMETYPES: [
         'image/gif',

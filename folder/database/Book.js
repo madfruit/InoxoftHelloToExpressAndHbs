@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const { dbTables } = require('../configs');
 
 const bookSchema = new Schema({
     name: {

@@ -20,7 +20,7 @@ module.exports = {
     },
 
     updateUser: async (user, userEmail) => {
-        const updatedUser = await User.findOneAndUpdate({ email: userEmail }, user);
+        const updatedUser = await User.findOneAndUpdate({ email: userEmail }, user, { new: true });
         return updatedUser;
     },
 

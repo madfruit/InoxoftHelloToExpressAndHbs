@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const cache = require('express-redis-cache');
+
 const { authController } = require('../controllers');
 const { authMiddleware, userMiddleware } = require('../middlewares');
 const { actionTokens } = require('../configs');

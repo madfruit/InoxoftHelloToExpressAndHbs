@@ -11,7 +11,7 @@ module.exports = {
             const bookInDB = await bookService.findBook(name, author, publisher);
 
             if (bookInDB) {
-                throw new ErrorHandler(409, 'This book already exists in database');
+                throw new ErrorHandler(statusCodes.CONFLICT, 'This book already exists in database');
             }
 
             next();

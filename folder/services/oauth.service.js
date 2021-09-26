@@ -7,7 +7,7 @@ module.exports = {
     },
 
     updateTokenPair: async (oldTokenPair, newTokenPair) => {
-        await OAuth.findOneAndUpdate({ access_token: oldTokenPair.access_token }, { ...newTokenPair });
+        await OAuth.findOneAndUpdate({ access_token: oldTokenPair.access_token }, { ...newTokenPair }, {});
     },
 
     deleteTokenPair: async (tokenPair) => {

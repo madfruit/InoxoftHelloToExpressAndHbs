@@ -3,10 +3,12 @@ const userController = require('../controllers/user.controller');
 
 const { authMiddleware, userMiddleware, fileMiddleware } = require('../middlewares');
 
-router.use('/:user_email', userMiddleware.getUserByDynamicParam('user_email', 'params', 'email'), userMiddleware.userExists);
+router.get('/history', authMiddleware.checkToken('access'), userController.getOrderHistory);
+
+router.get('/', userController.getAllUsers);
 
 router.get('/:user_email', userController.getUserByEmail);
-router.get('/', userController.getAllUsers);
+
 router.delete(
     '/:user_email',
     authMiddleware.checkToken('access'),
@@ -22,5 +24,7 @@ router.post(
     userMiddleware.checkEmailExists,
     userController.createUser
 );
+
+router.use('/:user_email', userMiddleware.getUserByDynamicParam('user_email', 'params', 'email'), userMiddleware.userExists);
 
 module.exports = router;
